@@ -1,4 +1,4 @@
-from neuralnetwork import NeuralNetwork
+from network import Network
 from layer import Layer
 from activation import tanh, tanh_derivative
 
@@ -7,9 +7,9 @@ def unpickle(file):
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
     return dict
-import pickle
 batch1 = unpickle("cifar 10 dataset/data_batch_1")
 batch1.keys()
+
 # there are four keys in the dictionary: batch_label, labels (numbered 0~9 for each class), data, and filenames
 # important ones are "labels" and "data"
 
@@ -35,9 +35,8 @@ test_x = test_x.astype('float32')
 test_x /= 255
 test_y = np_utils.to_categorical(test_y)
 
-model = NeuralNetwork()
-model.add(Layer(3072, 2000, tanh, tanh_derivative))
-model.add(Layer(2000, 1000, tanh, tanh_derivative))
-model.add(Layer(1000, 300, tanh, tanh_derivative))
-model.add(Layer(300, 10, tanh, tanh_derivative))
-model.compile(train_x, train_y, epochs=5, learning_rate=0.01)
+model = Network()
+model.add(Layer(3072, 100, tanh, tanh_derivative))
+model.add(Layer(100, 50, tanh, tanh_derivative))
+model.add(Layer(50, 10, tanh, tanh_derivative))
+model.fit(train_x, train_y, epochs=20, learning_rate=0.01)
